@@ -253,8 +253,9 @@ export class ProductManager {
     );
 
     if (productIndex === -1) {
-      console.error(`No existe un producto con ID: ${productId}`);
-      return;
+      //console.error(`No existe un producto con ID: ${productId}`);
+      //return;
+      throw new Error(`No existe un producto con ID: ${productId}`);
     }
 
     // .splice es un método de arreglos que permite eliminar y/o insertar elementos en una posición específica.

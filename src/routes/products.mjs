@@ -187,6 +187,41 @@ async function main(manager) {
       }
     }
   });
+
+  router.delete("/:pid", async (req, res) => {
+    try {
+      // Extraer el ID del producto del parámetro de la ruta
+      const productId = req.params.pid;
+
+      // Aqui ya repeti este codigo 3 veces, debería convertirlo en un middleware pero no alcanzo xd
+      // Validamos si la busqueda es por UUID, si no, nos ahorramos la lógica siguiente
+      if (!validateUUID(productId)) {
+        return res
+          .status(400)
+          .json({ error: "Invalid product ID format (expecting UUID)" });
+      }
+
+      // Enviará error si no encuentra el producto
+      manager.deleteProduct(productId);
+      // Guardamos nuestros productos en el FS
+      manager.saveProducts();
+
+      // Enviar respuesta de éxito
+      res
+        .status(200)
+        .json({ message: `Producto con ID: ${productId} eliminado` });
+    } catch (error) {
+      if (error.message.includes("No existe un producto con ID:")) {
+        res
+          .status(404)
+          .json({ error: "No existe un producto con el Id buscado" });
+      } else {
+        // Otros errores
+        console.error("Error al eliminar producto:", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+      }
+    }
+  });
 }
 
 // Función para inicializar la aplicación
