@@ -85,6 +85,53 @@ async function main(manager) {
       res.status(500).json({ error: error.message });
     }
   });
+
+  router.post("/", async (req, res) => {
+    try {
+      // Extraemos los datos del producto del json del request body
+      const { title, price, description, thumbnail, code, stock } = req.body;
+
+      // Revisamos si falta algun campo desestructurado del body
+      if (!title || !price || !description || !thumbnail || !code || !stock) {
+        throw new Error("Missing required fields"); // Error si falta un dato
+      }
+
+      // IMPORTANTE
+      // Como Javascript no tiene tipado de datos es súper importante pasar los campos en este orden exacto,
+      // sino, se puede crear el producto con un precio igual a un string que contenga la descripcion.
+      const product = new Product(
+        title,
+        price,
+        description,
+        thumbnail,
+        code,
+        stock
+      );
+
+      // Devolverá error si es que existe un producto con el mismo código en el arreglo de productos
+      manager.addProduct(product);
+      // Guardamos nuestros productos en el filesystem
+      // Aca hay posibilidad de optimizar ya que estamos escribiendo todos los productos que hay en memoria
+      // cuando en realidad lo que queremos es solo concatenar el nuevo producto
+      await manager.saveProducts();
+
+      // devolvemos el producto creado con su Id generado como uuid
+      res.status(201).json(product.getProductAsObject());
+    } catch (error) {
+      if (error.message === "Missing required fields") {
+        // 400 Bad Request si faltan datos para crear el producto
+        return res.status(400).json({ error: "Missing required fields" });
+      } else if (error.message == "Ya existe un producto con este código.") {
+        return res
+          .status(409)
+          .json({ error: "Ya existe un producto con este código." });
+      } else {
+        // Otros errores
+        console.error("Error creating product:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    }
+  });
 }
 
 // Función para inicializar la aplicación

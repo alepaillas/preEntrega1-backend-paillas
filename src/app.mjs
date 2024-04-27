@@ -9,6 +9,9 @@ const app = express();
 // Definimos el puerto en el que se ejecutará el servidor, utilizando el puerto definido en las variables de entorno si está disponible, de lo contrario, utilizamos el puerto 8080 por defecto
 const PORT = process.env.PORT || 8080;
 
+// para parsear JSON entrante por req.body
+app.use(express.json());
+
 // Usamos las rutas
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);

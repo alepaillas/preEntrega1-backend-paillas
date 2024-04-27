@@ -5,7 +5,8 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc1",
-    "stock": 25
+    "stock": 25,
+    "id": "ef173cd3-3055-4751-aebb-21763ca835bf"
   },
   {
     "title": "producto prueba 2",
@@ -13,7 +14,8 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc12",
-    "stock": 25
+    "stock": 25,
+    "id": "dc86b3bd-a8c5-4dc8-800f-774da3bb3f5a"
   },
   {
     "title": "producto prueba 3",
@@ -21,7 +23,8 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc123",
-    "stock": 25
+    "stock": 25,
+    "id": "a94f3666-1e90-424a-ba01-c6c6cfd90df6"
   },
   {
     "title": "producto prueba 4",
@@ -29,7 +32,8 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc1234",
-    "stock": 25
+    "stock": 25,
+    "id": "ff3c0c64-d4b6-4254-8160-afd15861ec4a"
   },
   {
     "title": "producto prueba 5",
@@ -37,7 +41,8 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc12345",
-    "stock": 25
+    "stock": 25,
+    "id": "04ef6dc3-a2c4-4620-838a-d541ff90b8a0"
   },
   {
     "title": "producto prueba 6",
@@ -45,7 +50,8 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc123456",
-    "stock": 25
+    "stock": 25,
+    "id": "ce8f1861-4ee5-47cb-994e-0de6977452b8"
   },
   {
     "title": "producto prueba 7",
@@ -53,7 +59,8 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc1234567",
-    "stock": 25
+    "stock": 25,
+    "id": "c3841061-e7b7-4aed-8861-f2b518ef641e"
   },
   {
     "title": "producto prueba 8",
@@ -61,7 +68,8 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc12345678",
-    "stock": 25
+    "stock": 25,
+    "id": "7802e9df-68dd-495b-b027-4e3874cf90a9"
   },
   {
     "title": "producto prueba 9",
@@ -69,7 +77,8 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc123456789",
-    "stock": 25
+    "stock": 25,
+    "id": "855914f3-c2be-44f5-a8ba-bb0f7139475c"
   },
   {
     "title": "producto prueba 10",
@@ -77,6 +86,7 @@
     "description": "Este es un producto prueba",
     "thumbnail": "Sin imagen",
     "code": "abc1234567890",
-    "stock": 25
+    "stock": 25,
+    "id": "f71b0923-b754-4536-955f-9e6925595974"
   }
 ]

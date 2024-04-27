@@ -170,8 +170,9 @@ export class ProductManager {
         (productoExistente) => productoExistente.getCode() === product.getCode()
       )
     ) {
-      console.error("Ya existe un producto con este código.");
-      return;
+      //console.error("Ya existe un producto con este código.");
+      //return;
+      throw new Error("Ya existe un producto con este código.");
     }
 
     this.#products.push(product); // push agrega al final del arreglo
