@@ -28,8 +28,15 @@ const filePath = new URL("products.json", dataPath).pathname;
 // export para poder usar la función en el archivo principal
 export async function saveProducts(products) {
   try {
+    // Removemos los ids de los productos antes de almacenarlos,
+    // porque la base de datos se va a encargar de generar los ids
+    const productsWithoutId = products.map((product) => {
+      const { id, ...rest } = product; // Desestructuramos y omitimos id
+      return rest;
+    });
+
     // Convertir lista de productos a JSON
-    const productsJSON = JSON.stringify(products, null, 2);
+    const productsJSON = JSON.stringify(productsWithoutId, null, 2);
     // null indica que no se hagan transformaciones al pasar por stringify
     // 2 controla el formateo de los datos, con 2 espacios por nivel, para que el archivo sea legible por humanos
 

@@ -141,6 +141,10 @@ export class Product {
       }`
     );
   }
+
+  updateId(id) {
+    this.#id = id;
+  }
 }
 
 export class ProductManager {
@@ -267,21 +271,26 @@ export class ProductManager {
     );
 
     if (productIndex === -1) {
-      console.error(`No existe un producto con ID: ${productId}`);
-      return;
+      //console.error(`No existe un producto con ID: ${productId}`);
+      //return;
+      throw new Error(`No existe un producto con ID: ${productId}`);
     }
 
     // verificamos si estamos asignando un código de producto que ya existe, igual que con addProduct
     if (
       this.#products.some(
         (productoExistente) =>
-          productoExistente.getCode() === updatedProductData.code
+          productoExistente.getCode() === updatedProductData.code &&
+          productoExistente.getId() !== productId // Excluye el mismo producto que estamos actualizando
       )
     ) {
-      console.error(
+      //console.error(
+      //  "No puedes asignar un código de producto que ya está en uso."
+      //);
+      //return;
+      throw new Error(
         "No puedes asignar un código de producto que ya está en uso."
       );
-      return;
     }
 
     // creamos un nuevo producto con los datos entregados
@@ -294,6 +303,12 @@ export class ProductManager {
       updatedProductData.code,
       updatedProductData.stock
     );
+
+    // Como creamos un nuevo producto, este se creo un nuevo Id,
+    // Esto puede ser bueno o malo segun el diseño que escojamos.
+    // Para cumplir con la consigna se pide conservar el Id original
+    // al actualizar el producto, por lo que hacemos eso.
+    updatedProduct.updateId(productId);
 
     // reemplazamos el producto en indice encontrado en el arreglo
     this.#products[productIndex] = updatedProduct;

@@ -132,6 +132,61 @@ async function main(manager) {
       }
     }
   });
+
+  router.post("/:pid", async (req, res) => {
+    try {
+      // Extraemos el Product Id del request parameter
+      const productId = req.params.pid;
+
+      // Validamos si la busqueda es por UUID, si no, nos ahorramos la lógica siguiente
+      if (!validateUUID(productId)) {
+        return res
+          .status(400)
+          .json({ error: "Invalid product ID format (expecting UUID)" });
+      }
+
+      // Extraemos los datos del producto del json del request body
+      const product = req.body;
+      // Desestructuramos para verificar si estan todos los campos requeridos
+      const { title, price, description, thumbnail, code, stock } = product;
+
+      // Revisamos si falta algun campo desestructurado del body
+      if (!title || !price || !description || !thumbnail || !code || !stock) {
+        throw new Error("Missing required fields"); // Error si falta un dato
+      }
+
+      // Devolverá error si es que existe un producto con el mismo código en el arreglo de productos
+      // También devolverá error si es que no encuentra producto con el Id buscado
+      manager.updateProduct(productId, product);
+      // Guardamos nuestros productos en el filesystem
+      // Aca hay posibilidad de optimizar ya que estamos escribiendo todos los productos que hay en memoria
+      // cuando en realidad lo que queremos es solo concatenar el nuevo producto
+      await manager.saveProducts();
+
+      // devolvemos el producto actualizado
+      res.status(201).json({ id: productId, ...product });
+    } catch (error) {
+      if (error.message === "Missing required fields") {
+        // 400 Bad Request si faltan datos para crear el producto
+        return res.status(400).json({ error: "Missing required fields" });
+      } else if (error.message.includes("No existe un producto con ID:")) {
+        return res
+          .status(404)
+          .json({ error: "No existe un producto con el Id buscado." });
+      } else if (
+        error.message ==
+        "No puedes asignar un código de producto que ya está en uso."
+      ) {
+        return res.status(409).json({
+          error: "No puedes asignar un código de producto que ya está en uso.",
+        });
+      } else {
+        // Otros errores
+        console.error("Error creating product:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    }
+  });
 }
 
 // Función para inicializar la aplicación
