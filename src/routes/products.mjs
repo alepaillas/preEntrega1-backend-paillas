@@ -232,7 +232,7 @@ async function initializeApp() {
     // Ejecutamos la función principal pasando el gestor de productos cargado
     await main(manager);
     // Mostramos un mensaje cuando se completen las tareas de inicio
-    console.log("Tareas de inicio completadas.");
+    console.log("Tareas de inicio de productos completadas.");
   } catch (error) {
     // Si se produce un error durante la inicialización, lo registramos en la consola y salimos del proceso con un código de error
     console.error("Error inicializando la aplicación:", error);

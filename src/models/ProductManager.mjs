@@ -213,6 +213,8 @@ export class ProductManager {
         productData.stock
       );
 
+      product.updateId(productData.id);
+
       products.push(product);
     });
     this.#products = products;

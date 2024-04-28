@@ -23,20 +23,14 @@ import fs from "fs/promises";
 // cuarta opción, para usar una carpeta data ubicada en el mismo nivel que nuestro src
 const dataPath = new URL("../../data/", import.meta.url);
 const filePath = new URL("products.json", dataPath).pathname;
+const cartPath = new URL("carts.json", dataPath).pathname;
 
 // Función para guardar productos en el archivo local
 // export para poder usar la función en el archivo principal
 export async function saveProducts(products) {
   try {
-    // Removemos los ids de los productos antes de almacenarlos,
-    // porque la base de datos se va a encargar de generar los ids
-    const productsWithoutId = products.map((product) => {
-      const { id, ...rest } = product; // Desestructuramos y omitimos id
-      return rest;
-    });
-
     // Convertir lista de productos a JSON
-    const productsJSON = JSON.stringify(productsWithoutId, null, 2);
+    const productsJSON = JSON.stringify(products, null, 2);
     // null indica que no se hagan transformaciones al pasar por stringify
     // 2 controla el formateo de los datos, con 2 espacios por nivel, para que el archivo sea legible por humanos
 
@@ -65,6 +59,59 @@ export async function loadProducts() {
       return [];
     } else {
       console.error("Error al cargar productos:", error);
+      return [];
+    }
+  }
+}
+
+// Función para guardar carritos en el archivo local
+export async function saveCarts(carts) {
+  try {
+    // Convertir lista de carritos a JSON
+    const cartsJSON = JSON.stringify(carts, null, 2);
+    //console.log(cartsJSON);
+
+    // Escribir JSON en el archivo especificado
+    await fs.writeFile(cartPath, cartsJSON);
+  } catch (error) {
+    // Manejar errores durante la escritura del archivo
+    console.error("Error al guardar carritos:", error);
+  }
+}
+
+// Función para cargar carritos del archivo JSON
+export async function loadCarts() {
+  try {
+    // Leer contenido del archivo JSON
+    const cartsJSON = await fs.readFile(cartPath, "utf8");
+
+    // Si el archivo está vacío, retorna un arreglo vacío
+    if (cartsJSON.length === 0) {
+      return [];
+    }
+
+    // Convertir JSON a lista de carritos
+    const carts = JSON.parse(cartsJSON);
+
+    // Asegurar que cada carrito tenga la estructura correcta
+    const validCarts = carts.filter((cart) => {
+      if (!cart || !cart.id || !cart.products) {
+        console.warn("Carrito inválido encontrado, se ignora:", cart);
+        return false;
+      }
+      return true;
+    });
+
+    //console.log(validCarts);
+    return validCarts;
+  } catch (error) {
+    // Manejar errores durante la lectura del archivo o si no existe
+    if (error.code === "ENOENT") {
+      console.warn("Archivo de carritos no encontrado. Se crea uno nuevo.");
+      await saveCarts([]); // Crear archivo vacío
+      return [];
+    } else {
+      console.error("Error al cargar carritos:", error);
       return [];
     }
   }
